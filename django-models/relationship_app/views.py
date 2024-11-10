@@ -1,18 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import Book
 from django.views.generic.detail import DetailView
-from .models import Library, UserProfile
+from .models import Library
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 
 
 def list_books(request):
   books = Book.objects.all()
   context = {'books': books}
   return render(request, 'relationship_app/list_books.html', context)
+
 
 
 class LibraryDetailView(DetailView):
@@ -54,28 +55,18 @@ def is_librarian(user):
 def is_member(user):
     return user.is_authenticated and user.userprofile.role == 'Member'
 
-
 # Views
+@user_passes_test(is_admin)
 def admin_view(request):
-  if not request.user.is_authenticated:
-    return redirect('login')
-  if request.user.userprofile.role != UserProfile.Role.ADMIN:
-    return render(request, 'relationship_app/unauthorized.html')  # Redirect to unauthorized page
-  return render(request, 'relationship_app/admin_view.html')
+    return render(request, 'relationship_app/admin_view.html')
 
-@login_required
+@user_passes_test(is_librarian)
 def librarian_view(request):
-  # Similar logic as admin_view, checking for Librarian role
-  if request.user.userprofile.role != UserProfile.Role.LIBRARIAN:
-    return render(request, 'relationship_app/unauthorized.html')
-  return render(request, 'relationship_app/librarian_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
 
-@login_required
+@user_passes_test(is_member)
 def member_view(request):
-  # Similar logic as admin_view, checking for Member role
-  if request.user.userprofile.role != UserProfile.Role.MEMBER:
-    return render(request, 'relationship_app/unauthorized.html')
-  return render(request, 'relationship_app/member_view.html')
+    return render(request, 'relationship_app/member_view.html')
 
 
 
