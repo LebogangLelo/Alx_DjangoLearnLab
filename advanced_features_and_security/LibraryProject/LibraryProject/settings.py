@@ -28,7 +28,7 @@ DEBUG = False
 ALLOWED_HOSTS = []
 
 
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 
 SECURE_SSL_REDIRECT = True  # Redirect all non-HTTPS requests to HTTPS
