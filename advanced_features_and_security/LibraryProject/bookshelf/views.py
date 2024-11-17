@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from .forms import BookForm
+from django.db.models import Q
+
 
 @permission_required('bookshelf.can_create', raise_exception=True)
 def add_book(request):
@@ -44,5 +46,16 @@ def edit_book(request, book_id):
 @permission_required('bookshelf.can_delete', raise_exception=True)
 def delete_book(request, book_id):
     ...
+
+
+
+def search_books(request):
+    query = request.GET.get('q')
+    if query:
+        books = Book.objects.filter(Q(title__icontains=query) | Q(author__name__icontains=query))
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
 
 

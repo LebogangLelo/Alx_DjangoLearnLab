@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome, Librarian!</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="{% url 'admin_view' %}">Admin Dashboard</a></li>
+            <li><a href="{% url 'librarian_view' %}">Librarian Dashboard</a></li>
+            <li><a href="{% url 'member_view' %}">Member Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Library Management</h2>
+        <p>Here, you can manage the library's collection and assist members.</p>
+        <!-- Add more specific functionalities for librarians below -->
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Library System</p>
+    </footer>
+</body>
+</html>

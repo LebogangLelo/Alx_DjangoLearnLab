@@ -82,3 +82,29 @@ Example:
 @permission_required('your_app.can_edit', raise_exception=True)
 def edit_document(request, pk):
     # Logic for editing a document
+
+# Security Measures
+
+## Secure Settings
+
+- `DEBUG`: Set to `False` in production.
+- `SECURE_BROWSER_XSS_FILTER`, `X_FRAME_OPTIONS`, `SECURE_CONTENT_TYPE_NOSNIFF`, `CSRF_COOKIE_SECURE`, `SESSION_COOKIE_SECURE`: Configured to enhance security.
+
+## CSRF Protection
+
+- Ensure all forms include `{% csrf_token %}`.
+
+## Secure Data Access
+
+- Use Django’s ORM to avoid SQL injection.
+- Validate and sanitize user inputs.
+
+## Content Security Policy (CSP)
+
+- Set up using `django-csp` middleware to prevent XSS attacks.
+
+## Testing
+
+- Manually test the application for secure handling of inputs and responses.
+- Test forms and input fields for CSRF and XSS vulnerabilities.
+
