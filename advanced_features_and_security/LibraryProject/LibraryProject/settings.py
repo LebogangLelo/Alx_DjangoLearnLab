@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kpztfsrd^w9d2m7s0@7a1x+vk5%2zd%^t@^f3%9^7zb(yu7qp*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
 
-AUTH_USER_MODEL = 'bookshelf.CustomUser'
+AUTH_USER_MODEL = 'relationship_app.CustomUser'
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'relationship_app',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -51,9 +52,27 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
+
+
+# Basic CSP configuration
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://trustedscripts.example.com')
+CSP_IMG_SRC = ("'self'", 'data:')
+CSP_STYLE_SRC = ("'self'", 'https://trustedstyles.example.com')
+
+# Browser-side security headers
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Enable secure cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 
 TEMPLATES = [
     {
