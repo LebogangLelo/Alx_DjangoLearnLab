@@ -31,6 +31,18 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'relationship_app.CustomUser'
 
 
+SECURE_SSL_REDIRECT = True  # Redirect all non-HTTPS requests to HTTPS
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow browsers to preload the HSTS policy
+
+# Other recommended settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # If behind a proxy
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,9 +77,9 @@ CSP_IMG_SRC = ("'self'", 'data:')
 CSP_STYLE_SRC = ("'self'", 'https://trustedstyles.example.com')
 
 # Browser-side security headers
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+SECURE_BROWSER_XSS_FILTER = True            # Enable the browser's XSS protection
+SECURE_CONTENT_TYPE_NOSNIFF = True          # Prevent content-type sniffing
+X_FRAME_OPTIONS = 'DENY'                    # Prevent clickjacking
 
 # Enable secure cookies
 CSRF_COOKIE_SECURE = True
