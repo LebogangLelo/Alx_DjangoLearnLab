@@ -2,20 +2,23 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from .models import Book, Author
-
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 
 class BookAPITests(APITestCase):
-    def setUp(self): 
-        self.author1 = Author.objects.create(name='Author One') 
-        self.author2 = Author.objects.create(name='Author Two') 
-        self.book1 = Book.objects.create(title='Book One', author=self.author1, publication_year=2021) 
+    
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')
+        self.author1 = Author.objects.create(name='Author One')
+        self.author2 = Author.objects.create(name='Author Two')
+        self.book1 = Book.objects.create(title='Book One', author=self.author1, publication_year=2021)
         self.book2 = Book.objects.create(title='Book Two', author=self.author2, publication_year=2022)
         self.book_url = reverse('book-list')
     
-    
     def test_create_book(self):
-        data = {'title': 'New Book', 'author': 'New Author', 'publication_year': 2023}
+        data = {'title': 'New Book', 'author': self.author1.id, 'publication_year': 2023}
         response = self.client.post(self.book_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Book.objects.count(), 3)
@@ -26,7 +29,7 @@ class BookAPITests(APITestCase):
         self.assertEqual(len(response.data), 2)
     
     def test_update_book(self):
-        data = {'title': 'Updated Book', 'author': 'Updated Author'}
+        data = {'title': 'Updated Book', 'author': self.author1.id}
         response = self.client.put(reverse('book-detail', args=[self.book1.id]), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.book1.refresh_from_db()
@@ -53,3 +56,6 @@ class BookAPITests(APITestCase):
         response = self.client.get(f"{self.book_url}?ordering=publication_year")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['title'], 'Book One')
+
+
+
