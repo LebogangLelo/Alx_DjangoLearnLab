@@ -17,3 +17,11 @@ This project demonstrates how to create custom views using Django REST Framework
 ## Permissions
 - Unauthenticated users can only view book information.
 - Authenticated users can create, update, and delete books.
+
+
+## API Query Examples
+- **Filter by Title:** `/api/books/?title=SampleTitle`
+- **Search by Keyword:** `/api/books/?search=Sample`
+- **Order by Publication Year:** `/api/books/?ordering=publication_year`
+- **Order by Title (Descending):** `/api/books/?ordering=-title`
+
