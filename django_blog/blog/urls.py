@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
-blog/urls.py doesn't contain: ["post/<int:pk>/update/"]
+from .views import PostDetailView, CommentUpdateView, CommentDeleteView
+
 
 urlpatterns = [
     path('register/', views.register, name='register'),
@@ -14,5 +15,9 @@ urlpatterns = [
     path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
 ]
+
 
