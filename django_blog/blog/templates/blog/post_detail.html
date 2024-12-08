@@ -13,13 +13,9 @@
       {% endif %}
     </div>
   {% endfor %}
-  <h3>Add a comment</h3>
+  <h3>Add a Comment</h3>
   {% if user.is_authenticated %}
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Post</button>
-    </form>
+    <a href="{% url 'comment-create' post.pk %}">Add Comment</a>
   {% else %}
     <p>You must be logged in to comment.</p>
   {% endif %}
