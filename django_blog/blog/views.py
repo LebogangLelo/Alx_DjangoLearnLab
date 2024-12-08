@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment 
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404, redirect
+from django.db.models import Q
 
 def register(request):
     if request.method == 'POST':
@@ -122,5 +123,17 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == comment.author
 
 
+
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    else:
+        results = Post.objects.none()
+    return render(request, 'search_results.html', {'results': results, 'query': query})
 
 
