@@ -11,11 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'username', 'bio', 'profile_picture', 'followers')
 
-        username = serializers.CharField(max_length=30)
-        email = serializers.EmailField()
 
 class UserRegisterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=30)  # Explicitly declared
+    email = serializers.EmailField()                # Explicitly declared
     password = serializers.CharField(write_only=True)
+
 
     class Meta:
         model = CustomUser
