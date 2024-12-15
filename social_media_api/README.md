@@ -128,3 +128,33 @@ Use Postman, curl, or any HTTP client to test the API endpoints. Verify that tok
 
 ## Permissions
 - Only authors can edit/delete their own posts or comments.
+
+
+## Social Media API: Follow and Feed Features
+
+### **Follow Management**
+- **Follow a User**
+  - **Endpoint:** `POST /accounts/follow/<user_id>/`
+  - **Description:** Follow a user by their ID.
+  - **Response:** A success message if the operation is successful.
+  
+- **Unfollow a User**
+  - **Endpoint:** `POST /accounts/unfollow/<user_id>/`
+  - **Description:** Unfollow a user by their ID.
+  - **Response:** A success message if the operation is successful.
+
+### **Feed**
+- **Get User Feed**
+  - **Endpoint:** `GET /posts/feed/`
+  - **Description:** Retrieve a list of posts from users that the authenticated user is following.
+  - **Response:** JSON array of posts, ordered by creation date.
+
+### **Model Updates**
+- **CustomUser**
+  - Added a `following` field for managing user follow relationships.
+
+### **Testing**
+Use tools like Postman to test the follow and feed functionalities:
+1. Follow and unfollow users by sending `POST` requests to the appropriate endpoints.
+2. View the feed by sending a `GET` request to `/posts/feed/`.
+
