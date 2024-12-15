@@ -1,11 +1,16 @@
 from rest_framework import viewsets, permissions
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from django.shortcuts import get_object_or_404
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
 
    
 
@@ -46,4 +51,34 @@ class FeedView(generics.ListAPIView):
         user = self.request.user
         following_users = user.following.all()
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    if created:
+        # Create notification
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb='liked your post',
+            target=post
+        )
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    like = Like.objects.filter(post=post, user=request.user)
+    if like.exists():
+        like.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
