@@ -56,8 +56,8 @@ class FeedView(generics.ListAPIView):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    post = generics.get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
     if created:
         # Create notification
         Notification.objects.create(
@@ -73,7 +73,7 @@ def like_post(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def unlike_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     like = Like.objects.filter(post=post, user=request.user)
     if like.exists():
         like.delete()
