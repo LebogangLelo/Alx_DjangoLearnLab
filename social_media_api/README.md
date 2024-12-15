@@ -89,3 +89,42 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Testing
 Use Postman, curl, or any HTTP client to test the API endpoints. Verify that tokens are generated and returned correctly upon registration and login.
+
+# Social Media API - Posts and Comments
+
+## API Endpoints
+
+### Posts
+- **List Posts**: `GET /api/posts/`
+- **Create Post**: `POST /api/posts/`
+  - **Request Body**:
+    ```json
+    {
+        "title": "Post Title",
+        "content": "Post content"
+    }
+    ```
+- **Retrieve Post**: `GET /api/posts/{id}/`
+- **Update Post**: `PUT /api/posts/{id}/`
+- **Delete Post**: `DELETE /api/posts/{id}/`
+
+### Comments
+- **List Comments**: `GET /api/comments/`
+- **Create Comment**: `POST /api/comments/`
+  - **Request Body**:
+    ```json
+    {
+        "post": 1,
+        "content": "Comment content"
+    }
+    ```
+- **Retrieve Comment**: `GET /api/comments/{id}/`
+- **Update Comment**: `PUT /api/comments/{id}/`
+- **Delete Comment**: `DELETE /api/comments/{id}/`
+
+## Features
+- Pagination: List endpoints return paginated results.
+- Filtering: Search posts by `title` or `content`.
+
+## Permissions
+- Only authors can edit/delete their own posts or comments.
